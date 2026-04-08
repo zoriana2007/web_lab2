@@ -8,6 +8,11 @@
 </head>
 <body class="container mt-4">
 
+<div style="text-align: right; margin-bottom: 20px;">
+    Вітаю, <strong>${sessionScope.user}</strong>!
+    <a href="${pageContext.request.contextPath}/logout">Вийти</a>
+</div>
+
     <h1>Управління літаками</h1>
 
     <c:if test="${not empty error}">
