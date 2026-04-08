@@ -15,6 +15,7 @@ import java.util.List;
 
 @WebServlet("/plane")
 public class PlaneFormServlet extends HttpServlet {
+
     private PlaneService planeService;
 
     @Override
@@ -25,31 +26,30 @@ public class PlaneFormServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        try {
-            String idParam = req.getParameter("id");
-            Plane plane = null;
 
-            if (idParam != null && !idParam.isEmpty()) {
-                plane = planeService.getPlaneById(Integer.parseInt(idParam));
-            }
+        String idParam = req.getParameter("id");
+        Plane plane = null;
 
-            List<Aviacompany> aviacompanies = planeService.getAllAviacompanies();
-            List<Manufacturer> manufacturers = planeService.getAllManufacturers();
-
-            req.setAttribute("plane", plane);
-            req.setAttribute("aviacompanies", aviacompanies);
-            req.setAttribute("manufacturers", manufacturers);
-            req.getRequestDispatcher("/WEB-INF/views/planes/form.jsp").forward(req, resp);
-        } catch (Exception e) {
-            req.setAttribute("error", "Помилка при завантаженні форми: " + e.getMessage());
-            req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
+        if (idParam != null && !idParam.isEmpty()) {
+            plane = planeService.getPlaneById(Integer.parseInt(idParam));
         }
+
+        List<Aviacompany> aviacompanies = planeService.getAllAviacompanies();
+        List<Manufacturer> manufacturers = planeService.getAllManufacturers();
+
+        req.setAttribute("plane", plane);
+        req.setAttribute("aviacompanies", aviacompanies);
+        req.setAttribute("manufacturers", manufacturers);
+
+        req.getRequestDispatcher("/WEB-INF/views/planes/form.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         Plane plane = new Plane();
+
         try {
             String idParam = req.getParameter("id");
             String model = req.getParameter("model");
@@ -79,14 +79,16 @@ public class PlaneFormServlet extends HttpServlet {
             if (aviacompanyIdParam != null && !aviacompanyIdParam.isEmpty()) {
                 Aviacompany aviacompany = planeService.getAllAviacompanies().stream()
                         .filter(a -> a.getId() == Integer.parseInt(aviacompanyIdParam))
-                        .findFirst().orElse(null);
+                        .findFirst()
+                        .orElse(null);
                 plane.setAviacompany(aviacompany);
             }
 
             if (manufacturerIdParam != null && !manufacturerIdParam.isEmpty()) {
                 Manufacturer manufacturer = planeService.getAllManufacturers().stream()
                         .filter(m -> m.getId() == Integer.parseInt(manufacturerIdParam))
-                        .findFirst().orElse(null);
+                        .findFirst()
+                        .orElse(null);
                 plane.setManufacturer(manufacturer);
             }
 
@@ -99,18 +101,18 @@ public class PlaneFormServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/planes");
 
         } catch (IllegalArgumentException e) {
-            req.setAttribute("error", e.getMessage());
-            req.setAttribute("plane", plane);
-            req.setAttribute("aviacompanies", planeService.getAllAviacompanies());
-            req.setAttribute("manufacturers", planeService.getAllManufacturers());
+            setFormAttributes(req, plane, e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/planes/form.jsp").forward(req, resp);
-
         } catch (Exception e) {
-            req.setAttribute("error", "Помилка при збереженні літака: " + e.getMessage());
-            req.setAttribute("plane", plane);
-            req.setAttribute("aviacompanies", planeService.getAllAviacompanies());
-            req.setAttribute("manufacturers", planeService.getAllManufacturers());
+            setFormAttributes(req, plane, "Помилка при збереженні літака: " + e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/planes/form.jsp").forward(req, resp);
         }
+    }
+
+    private void setFormAttributes(HttpServletRequest req, Plane plane, String errorMessage) {
+        req.setAttribute("error", errorMessage);
+        req.setAttribute("plane", plane);
+        req.setAttribute("aviacompanies", planeService.getAllAviacompanies());
+        req.setAttribute("manufacturers", planeService.getAllManufacturers());
     }
 }
