@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.DatabaseConnection;
+import model.dao.interfaces.UserDao;
 import model.entity.User;
 import java.sql.*;
 

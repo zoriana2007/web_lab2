@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.dao.PlaneDao;
+import model.dao.interfaces.PlaneDao;
 import model.entity.Plane;
 import model.entity.Aviacompany;
 import model.entity.Manufacturer;

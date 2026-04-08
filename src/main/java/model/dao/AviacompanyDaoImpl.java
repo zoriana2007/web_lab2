@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.DatabaseConnection;
+import model.dao.interfaces.AviacompanyDao;
 import model.entity.Aviacompany;
 
 import java.sql.*;

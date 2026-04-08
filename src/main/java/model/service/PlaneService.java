@@ -2,6 +2,9 @@ package model.service;
 
 import controller.validator.PlaneValidator;
 import model.dao.*;
+import model.dao.interfaces.AviacompanyDao;
+import model.dao.interfaces.ManufacturerDao;
+import model.dao.interfaces.PlaneDao;
 import model.entity.Plane;
 import model.entity.Aviacompany;
 import model.entity.Manufacturer;

@@ -1,6 +1,5 @@
-package model.dao;
+package model.dao.interfaces;
 
-import model.entity.Aviacompany;
 import model.entity.Manufacturer;
 
 import java.util.List;

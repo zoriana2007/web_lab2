@@ -1,7 +1,7 @@
 package model.dao;
 
 import model.DatabaseConnection;
-import model.dao.ManufacturerDao;
+import model.dao.interfaces.ManufacturerDao;
 import model.entity.Manufacturer;
 import java.sql.*;
 import java.util.ArrayList;
